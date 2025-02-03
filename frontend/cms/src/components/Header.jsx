@@ -8,8 +8,9 @@ function Header() {
     async function getHeaderContent() {
         const response = await axios.get("http://localhost:5000/api/headerContent")
         console.log(
-            "response" , response
+            "response" , response?.data
         )  
+        setContent(response.data);
     }
     useEffect(() => {
         getHeaderContent();
@@ -27,7 +28,7 @@ function Header() {
                         {
                             content.map((nav , index) => {
                                 return <div key = {index}>    
-                                    <li>{nav}</li>    
+                                    <li>{nav?.content[0]}</li>    
                                 </div>
                             })
                         }
