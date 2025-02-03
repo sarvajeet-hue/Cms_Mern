@@ -58,4 +58,23 @@ app.get("/api/headerContent", async (req , res) => {
     res.json(headercontent)
 })
 
+app.put("/api/headerContent", async (req, res) => {
+    try {
+        const { content } = req.body; // Expecting an array like ["About Us", "Home", "Contact"]
+
+        let header = await header.findOne();
+        if (!header) {
+            return res.status(404).json({ message: "Header content not found" });
+        }
+
+        header.content = content;
+        await header.save();
+
+        res.json({ message: "Header content updated", header });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+
 app.listen(5000, () => console.log("Server running on port 5000"));
