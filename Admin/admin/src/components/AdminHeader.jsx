@@ -57,7 +57,7 @@ function AdminHeader() {
                 <div key={index} className="flex items-center mb-2">
                     <input
                         type="text"
-                        value={item?.content[0]}
+                        value={item}
                         onChange={(e) => handleChange(index, e.target.value)}
                         className="border p-2 w-full"
                     />
