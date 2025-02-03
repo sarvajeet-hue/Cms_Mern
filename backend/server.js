@@ -55,7 +55,12 @@ app.post("/api/header" , async (req , res) => {
 app.get("/api/headerContent", async (req , res) => {
     const headercontent = await header.find();
     console.log("headercontent" , headercontent)
-    res.json(headercontent)
+     // Combine all content arrays into a single array
+     const combinedContent = headercontent.reduce((acc, header) => {
+        return acc.concat(header.content); // Merge the 'content' arrays
+    }, []);
+    console.log("headercontent" , combinedContent)
+    res.json(combinedContent)
 })
 
 app.put("/api/headerContent", async (req, res) => {
