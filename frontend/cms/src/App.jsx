@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes, Link, useParams } from "react-router-dom";
 import axios from "axios";
+import Header from "./components/Header";
 
 function Home() {
     const [pages, setPages] = useState([]);
@@ -54,6 +55,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/:slug" element={<Page />} />
+                <Route path="/header" element={<Header />} />
             </Routes>
         </Router>
     );

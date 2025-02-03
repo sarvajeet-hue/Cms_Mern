@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
+const header = require('../backend/model/Header')
 
 const app = express();
 app.use(cors());
@@ -42,5 +43,19 @@ app.post("/api/pages", async (req, res) => {
     await newPage.save();
     res.json(newPage);
 });
+
+app.post("/api/header" , async (req , res) => {
+    const {content} = req.body;
+    const newHeader = new header({content});
+    await newHeader.save()
+    res.json(newHeader)
+})
+
+
+app.get("/api/headerContent", async (req , res) => {
+    const headercontent = await header.find();
+    console.log("headercontent" , headercontent)
+    res.json(headercontent)
+})
 
 app.listen(5000, () => console.log("Server running on port 5000"));
