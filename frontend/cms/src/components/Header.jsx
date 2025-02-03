@@ -28,7 +28,7 @@ function Header() {
                         {
                             content.map((nav , index) => {
                                 return <div key = {index}>    
-                                    <li>{nav?.content[0]}</li>    
+                                    <li>{nav}</li>    
                                 </div>
                             })
                         }
