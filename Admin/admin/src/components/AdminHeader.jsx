@@ -29,6 +29,20 @@ function AdminHeader() {
         setUpdatedContent(text);
     };
 
+    // Toolbar configuration for text formatting
+    const modules = {
+        toolbar: [
+          [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+          [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+          [{ 'align': [] }],
+          ['bold', 'italic', 'underline'],
+          [{ 'color': [] }, { 'background': [] }],  // Adds text color and background color options
+          ['link'],
+          ['image'],
+          [{ 'delete': 'delete' }],  // Add a custom delete button
+        ],
+      };
+
     // Save updated navigation content
     const saveHeaderContent = async () => {
         try {
@@ -65,6 +79,7 @@ function AdminHeader() {
                                             onChange={setUpdatedContent}
                                             theme="snow"
                                             className="bg-white text-black p-2 rounded-md w-64"
+                                            modules={modules} // Pass toolbar configuration here
                                         />
                                         <button
                                             onClick={() => saveHeaderContent(index)}
