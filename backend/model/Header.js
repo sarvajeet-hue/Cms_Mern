@@ -1,10 +1,7 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const headerCms = new mongoose.Schema({
-    content: {
-        type: [String],  // Array of strings
-        required: true
-    }
+const HeaderSchema = new mongoose.Schema({
+    content: { type: [String] }, // Store HTML from ReactQuill
 });
 
-module.exports = mongoose.model('Header', headerCms);
+module.exports = mongoose.model("Header", HeaderSchema);
