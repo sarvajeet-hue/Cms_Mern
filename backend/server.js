@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const Header = require("../backend/model/Header");
+const router = require("./router/headerRouter");
 
 const app = express();
 app.use(cors());
@@ -25,6 +26,8 @@ const PageSchema = new mongoose.Schema({
 });
 
 const Page = mongoose.model("Page", PageSchema);
+
+app.use('/api/headerDelete' , router)         
 
 // API Routes
 app.get("/api/pages", async (req, res) => {
