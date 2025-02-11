@@ -4,6 +4,8 @@ const cors = require("cors");
 require("dotenv").config();
 const Header = require("../backend/model/Header");
 const router = require("./router/headerRouter");
+const deleteRouter = require("./router/deleteRouter");
+
 
 const app = express();
 app.use(cors());
@@ -27,7 +29,8 @@ const PageSchema = new mongoose.Schema({
 
 const Page = mongoose.model("Page", PageSchema);
 
-app.use('/api/headerDelete' , router)         
+app.use('/api/headerDelete' , router)
+app.use('/api/getalldata' , deleteRouter)   
 
 // API Routes
 app.get("/api/pages", async (req, res) => {
@@ -50,8 +53,9 @@ app.post("/api/pages", async (req, res) => {
 });
 
 app.post("/api/header", async (req, res) => {
-  const { content } = req.body;
-  const newHeader = new Header({ content });
+  let { content } = req.body;
+  const newHeader  = new Header({content})
+
   await newHeader.save();
   res.json(newHeader);
 });
@@ -79,13 +83,15 @@ app.get("/api/headerContent", async (req, res) => {
 
 app.put("/api/headerContent", async (req, res) => {
     try {
-      const { content } = req.body;
-  
+      let { content } = req.body;
+      console.log("Received content:", content);
+      
       // Find the header content by ID and update it
       const updatedHeader = await Header.findOneAndUpdate(
-        {}, // Empty condition means it updates the first found document (assuming only one document exists)
+        {}, // Empty condition means it updates the first found document (assuming only one document exists), 
+        
         { content }, // Set the new content
-        { new: true } // Return the updated document
+        { new: true, upsert: true } // Return the updated document
       );
       console.log(
         "updatedHeader",

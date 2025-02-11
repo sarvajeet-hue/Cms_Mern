@@ -2,12 +2,17 @@ const Header = require("../model/Header");
 
 const deleteHeader = async (req, res) => {
     try{
-        const id = req.params.id;
-        console.log("id" , id);
-        const header = await Header.findByIdAndDelete(id);
-        if(!header){
-            return res.status(404).json({message: "Header not found"});
+        const content = req.body;     
+        if(!content){
+            return res.status(404).json({message: "content not found"});
         }
+        const existed_content = await Header.findOne({content})
+        if(!existed_content){
+            return res.status(404).json({message: "content not found"});
+        }
+
+        console.log("existed_content" , existed_content);
+        
         res.status(200).json({message: "Header deleted successfully"});
 
     }catch(error){

@@ -1,11 +1,11 @@
-import React, { useState, useEffect  , useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css"; // Import Quill styles
 
 function AdminHeader() {
-  const ref = useRef(null)
+  const ref = useRef(null);
   const [content, setContent] = useState([]); // Stores navigation items
   const [editingIndex, setEditingIndex] = useState(null); // Track active editor
   const [updatedContent, setUpdatedContent] = useState(""); // Stores text for editing
@@ -26,20 +26,34 @@ function AdminHeader() {
     getHeaderContent();
     document.addEventListener("mousedown", handleOutsideClick);
   }, []);
-  
 
-  function handleOutsideClick(event){
-    if(ref.current && !ref.current.contains(event.target)){
-      setEditingIndex(null)
+  function handleOutsideClick(event) {
+    if (ref.current && !ref.current.contains(event.target)) {
+      setEditingIndex(null);
     }
   }
-  
-
-
   // Handle edit click
   const handleEdit = (index, text) => {
     setEditingIndex(index);
     setUpdatedContent(text);
+  };
+
+  const handledelete = async (index) => {
+    try {
+      const existed = await axios.get(
+        `http://localhost:5000/api/getalldata/data`
+      );
+
+      if (existed.data.length === 0) {
+        alert("No data found");
+        return;
+      }
+
+      let deletedContent = existed?.data[0]?.content[index]
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   // Toolbar configuration for text formatting
@@ -57,9 +71,10 @@ function AdminHeader() {
   };
 
   // Save updated navigation content
-  const saveHeaderContent = async () => {
+  const saveHeaderContent = async (index) => {
     try {
       let updatedArray = [...content]; // Make a copy of the current state
+
       updatedArray[editingIndex] = updatedContent; // Replace the edited item with the new content
 
       // Send PUT request to update the content in the backend
@@ -88,8 +103,12 @@ function AdminHeader() {
           <ul className="flex space-x-6">
             {content.map((nav, index) => (
               <li key={index} className="cursor-pointer relative">
+                <button onClick={() => handledelete(index)}>Edit</button>
                 {editingIndex === index ? (
-                  <div ref = {ref} className="absolute bg-white p-2 rounded shadow-lg z-50">
+                  <div
+                    ref={ref}
+                    className="absolute bg-white p-2 rounded shadow-lg z-50"
+                  >
                     <ReactQuill
                       value={updatedContent}
                       onChange={setUpdatedContent}
