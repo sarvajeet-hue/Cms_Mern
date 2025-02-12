@@ -40,16 +40,20 @@ function AdminHeader() {
 
   const handledelete = async (index) => {
     try {
-      const existed = await axios.get(
-        `http://localhost:5000/api/getalldata/data`
+      
+      const existed = await axios.post(
+        `http://localhost:5000/api/headerDelete/${encodeURIComponent(content[index])}`
       );
 
       if (existed.data.length === 0) {
         alert("No data found");
         return;
       }
-
-      let deletedContent = existed?.data[0]?.content[index]
+      
+      if(existed){
+        getHeaderContent();
+      }
+      alert("Header deleted successfully"); 
 
     } catch (error) {
       console.log(error);

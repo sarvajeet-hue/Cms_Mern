@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 require("dotenv").config();
 const Header = require("../backend/model/Header");
-const router = require("./router/headerRouter");
+
 const deleteRouter = require("./router/deleteRouter");
 
 
@@ -18,7 +18,7 @@ mongoose
   })
   .then(() => console.log("MongoDB Connected"))
   .catch((err) => console.log(err));
-
+  
 // Page Schema
 const PageSchema = new mongoose.Schema({
   title: String,
@@ -29,8 +29,8 @@ const PageSchema = new mongoose.Schema({
 
 const Page = mongoose.model("Page", PageSchema);
 
-app.use('/api/headerDelete' , router)
-app.use('/api/getalldata' , deleteRouter)   
+app.use('/api/headerDelete' , deleteRouter)
+
 
 // API Routes
 app.get("/api/pages", async (req, res) => {
@@ -54,6 +54,7 @@ app.post("/api/pages", async (req, res) => {
 
 app.post("/api/header", async (req, res) => {
   let { content } = req.body;
+  console.log("Received content:", content);
   const newHeader  = new Header({content})
 
   await newHeader.save();
