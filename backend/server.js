@@ -63,20 +63,24 @@ app.post("/api/header", async (req, res) => {
 
 app.get("/api/headerContent", async (req, res) => {
     try {
-      const headercontent = await Header.findOne(); // Assuming only one document
+      const headercontent = await Header.find({}); // Assuming only one document
       if (!headercontent) {
         return res.status(404).json({ message: "No header content found" });
       }
   
       console.log("Header content fetched:", headercontent);
-  
+      
+        let combinedContent = []
       // Directly return the content if it's a single document
-      const combinedContent = headercontent.content;
-  
-      console.log("Combined content:", combinedContent);
-  
-      res.json(combinedContent);
-    } catch (error) {
+        for(const content of headercontent){
+            let content_array = content?.content || []
+
+            combinedContent = combinedContent.concat(content_array)
+            console.log("combinedContent" , combinedContent)
+        }
+        res.json(combinedContent);
+
+      } catch (error) {
       console.error("Error fetching header content:", error);
       res.status(500).json({ error: "Error fetching header content" });
     }
